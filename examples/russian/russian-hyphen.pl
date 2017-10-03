@@ -1,6 +1,5 @@
 #! /usr/bin/perl
 
-use lib q{../..};
 use AI::Hyphen;
 use Storable;
 use Getopt::Long;
