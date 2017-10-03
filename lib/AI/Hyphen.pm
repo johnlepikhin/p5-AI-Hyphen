@@ -148,14 +148,12 @@ our $VERSION = '0.01';
             $tl_length--;
             $pos++;
 
-            #            print "$pos, score = $_, tl = $tl_length\n";
             if (   $_ >= $min_score
                 && $hd_length >= $min_length
                 && $tl_length >= $min_length ) {
 
-                #                print "add, offset=$offset\n";
                 substr $word, $pos + $offset, 0, $hyphen_char;
-                $offset++;
+                $offset += length $hyphen_char;
                 $hd_length = 0;
             }
         }
