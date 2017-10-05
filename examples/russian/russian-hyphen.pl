@@ -11,7 +11,7 @@ use utf8;
 binmode STDIN,  ':encoding(UTF-8)';
 binmode STDOUT, ':encoding(UTF-8)';
 
-my $storage_file        = '/tmp/hyphens.data';
+my $storage_file        = '~/bin/hyphen/russian/network.data';
 my $opt_learn_stdin     = 0;
 my $opt_load_network    = 0;
 my $opt_word            = undef;
@@ -28,6 +28,7 @@ GetOptions(
 );
 
 $opt_hyphen_char = decode( 'UTF-8', $opt_hyphen_char );
+$storage_file = glob $storage_file;
 
 my $h;
 
@@ -35,7 +36,7 @@ if ($opt_learn_stdin) {
 
     my @chars = split //, 'йцукенгшщзхъфывапролджэячсмитьбю';
 
-    $h = AI::Hyphen->new( chars => \@chars );
+    $h = AI::Hyphen->new( chars => \@chars, internal_layers => [80] );
 
     my $learn_data;
     while (<>) {
@@ -64,5 +65,5 @@ if ($opt_hyphenize_stdin) {
         $text .= $_;
     }
 
-    print $h->hyphenize_text( $text, $opt_hyphen_char, 0.1, 2 ), "\n";
+    print $h->hyphenize_text( $text, $opt_hyphen_char, 0.1, 2 );
 }
