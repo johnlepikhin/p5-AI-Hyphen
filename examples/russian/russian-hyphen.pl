@@ -8,7 +8,7 @@ use warnings;
 use strict;
 use utf8;
 
-binmode STDIN,  ':encoding(UTF-8)';
+binmode STDIN,  ':raw';
 binmode STDOUT, ':encoding(UTF-8)';
 
 my $storage_file        = '~/bin/hyphen/russian/network.data';
@@ -27,7 +27,7 @@ GetOptions(
     'hyphen-char=s'    => \$opt_hyphen_char,
 );
 
-$opt_hyphen_char = decode( 'UTF-8', $opt_hyphen_char );
+$opt_hyphen_char = decode( 'UTF-8', $opt_hyphen_char, sub {q{}} );
 $storage_file = glob $storage_file;
 
 my $h;
@@ -55,15 +55,15 @@ if ($opt_learn_stdin) {
 }
 
 if ( defined $opt_word ) {
-    $opt_word = decode( 'UTF-8', $opt_word );
-    print $h->hyphenize_word( $opt_word, $opt_hyphen_char, 0.1, 2 ), "\n";
+    $opt_word = decode( 'UTF-8', $opt_word, sub {q{}} );
+    print $h->hyphenize_word( $opt_word, $opt_hyphen_char, 0.2, 2 ), "\n";
 }
 
 if ($opt_hyphenize_stdin) {
-    my $text;
+    my $text = q{};
     while (<>) {
         $text .= $_;
     }
-
-    print $h->hyphenize_text( $text, $opt_hyphen_char, 0.1, 2 );
+    $text = decode( 'UTF-8', $text, sub {q{}} );
+    print $h->hyphenize_text( $text, $opt_hyphen_char, 0.3, 2 );
 }
